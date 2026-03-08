@@ -13,6 +13,7 @@ interface CartContextType {
   updateQuantity: (itemId: string, delta: number) => void;
   clearCart: () => void;
   totalAmount: number;
+  orders: any[];
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -21,6 +22,7 @@ const CART_STORAGE_KEY = '@bitezy_cart';
 
 export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [cart, setCart] = useState<CartItem[]>([]);
+  const [orders, setOrders] = useState<any[]>([]);
 
   useEffect(() => {
     loadCart();
@@ -84,7 +86,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const totalAmount = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
   return (
-    <CartContext.Provider value={{ cart, addToCart, removeFromCart, updateQuantity, clearCart, totalAmount }}>
+    <CartContext.Provider value={{ cart, addToCart, removeFromCart, updateQuantity, clearCart, totalAmount, orders }}>
       {children}
     </CartContext.Provider>
   );

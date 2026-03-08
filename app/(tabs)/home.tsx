@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, FlatList, TextInput, TouchableOpacity, Image, ScrollView, Dimensions } from 'react-native';
 import { useRouter } from 'expo-router';
-import { CATEGORIES, FoodItem, FOOD_ITEMS } from '@/data/mockData';
+import { CATEGORIES, FOOD_ITEMS } from '@/data/mockData';
 import { Colors, Spacing, Shadows } from '@/constants/theme';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -15,12 +15,12 @@ export default function HomeScreen() {
   const { user } = useAuth();
   const router = useRouter();
 
-  const filteredCategories = CATEGORIES.filter(cat => 
+  const filteredCategories = CATEGORIES.filter(cat =>
     cat.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const renderCategory = ({ item }: { item: any }) => (
-    <TouchableOpacity 
+    <TouchableOpacity
       style={styles.categoryCard}
       onPress={() => router.push(`/food-list/${item.id}`)}
     >
@@ -97,7 +97,7 @@ export default function HomeScreen() {
         <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>Popular Now</Text>
         </View>
-        
+
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.popularList}>
             {FOOD_ITEMS.slice(0, 4).map((item) => (
                 <TouchableOpacity key={item.id} style={styles.popularCard} onPress={() => router.push(`/food-list/${item.categoryId}`)}>
@@ -109,7 +109,7 @@ export default function HomeScreen() {
                 </TouchableOpacity>
             ))}
         </ScrollView>
-        
+
         <View style={{ height: 100 }} />
       </ScrollView>
     </View>
@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: Spacing.l,
-    paddingTop: Spacing.l,
+    paddingTop: Spacing.xxl,
     marginBottom: Spacing.m,
   },
   greeting: {

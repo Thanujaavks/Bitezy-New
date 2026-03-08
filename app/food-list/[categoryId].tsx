@@ -1,67 +1,103 @@
 import React from 'react';
-import { StyleSheet, View, Text, FlatList, Image, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity, ToastAndroid, Platform, Alert } from 'react-native';
 import { useLocalSearchParams, useRouter, Stack } from 'expo-router';
-import { CATEGORIES, FOOD_ITEMS } from '@/data/mockData';
-import { Colors, Spacing, Shadows } from '@/constants/theme';
-import { Ionicons } from '@expo/vector-icons';
+import { FOOD_ITEMS, CATEGORIES } from '@/data/mockData';
 import { useCart } from '@/context/CartContext';
-import { LinearGradient } from 'expo-linear-gradient';
+import { Ionicons } from '@expo/vector-icons';
+import { Colors } from '@/constants/theme';
 
-export default function FoodListScreen() {
+export default function CategoryScreen() {
   const { categoryId } = useLocalSearchParams();
-  const { addToCart } = useCart();
   const router = useRouter();
+  const { addToCart, cart } = useCart();
 
   const category = CATEGORIES.find(c => c.id === categoryId);
-  const items = FOOD_ITEMS.filter(i => i.categoryId === categoryId);
+  const items = FOOD_ITEMS.filter(item => item.categoryId === categoryId);
 
-  const renderFoodItem = ({ item }: { item: any }) => (
-    <View style={styles.card}>
-      <Image source={{ uri: item.image }} style={styles.image} />
-      <View style={styles.info}>
-        <View style={styles.infoHeader}>
-            <Text style={styles.name}>{item.name}</Text>
-            <View style={styles.ratingContainer}>
-                <Ionicons name="star" size={14} color="#FFD700" />
-                <Text style={styles.ratingText}>{item.rating}</Text>
-            </View>
-        </View>
-        <Text style={styles.description} numberOfLines={2}>{item.description}</Text>
-        <View style={styles.footer}>
-          <Text style={styles.price}>${item.price.toFixed(2)}</Text>
-          <TouchableOpacity 
-            style={styles.addButton}
-            onPress={() => addToCart(item)}
-          >
-            <LinearGradient
-                colors={Colors.light.gradient}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 0 }}
-                style={styles.gradientButton}
-            >
-                <Ionicons name="add" size={24} color="#fff" />
-            </LinearGradient>
-          </TouchableOpacity>
-        </View>
-      </View>
-    </View>
-  );
+  const handleAddToCart = (item: any) => {
+    addToCart(item);
+    if (Platform.OS === 'android') {
+      ToastAndroid.show(`${item.name} added to cart!`, ToastAndroid.SHORT);
+    } else {
+      Alert.alert('Success', `${item.name} added to cart!`);
+    }
+  };
+
+  const getQuantityInCart = (itemId: string) => {
+    const cartItem = cart.find(item => item.id === itemId);
+    return cartItem ? cartItem.quantity : 0;
+  };
 
   return (
     <View style={styles.container}>
-      <Stack.Screen options={{ title: category?.name || 'Food List' }} />
-      <FlatList
-        data={items}
-        renderItem={renderFoodItem}
-        keyExtractor={(item) => item.id}
-        contentContainerStyle={styles.list}
-        ListEmptyComponent={
-          <View style={styles.emptyContainer}>
-            <Ionicons name="fast-food-outline" size={80} color="#ccc" />
-            <Text style={styles.emptyText}>No items found in this category.</Text>
-          </View>
-        }
+      <Stack.Screen 
+        options={{ 
+          title: category ? category.name : 'Category',
+          headerRight: () => (
+            <TouchableOpacity onPress={() => router.push('/(tabs)/cart')} style={styles.headerCart}>
+              <Ionicons name="cart-outline" size={24} color="white" />
+              {cart.length > 0 && (
+                <View style={styles.badge}>
+                  <Text style={styles.badgeText}>
+                    {cart.reduce((total, item) => total + item.quantity, 0)}
+                  </Text>
+                </View>
+              )}
+            </TouchableOpacity>
+          )
+        }} 
       />
+
+      {category && (
+        <View style={styles.bannerContainer}>
+          <Image source={{ uri: category.image }} style={styles.banner} />
+          <View style={styles.bannerOverlay}>
+            <Text style={styles.bannerTitle}>{category.name}</Text>
+          </View>
+        </View>
+      )}
+
+      {items.length === 0 ? (
+        <View style={styles.emptyContainer}>
+          <Ionicons name="fast-food-outline" size={80} color="#ccc" />
+          <Text style={styles.emptyText}>No items found in this category.</Text>
+        </View>
+      ) : (
+        <FlatList
+          data={items}
+          keyExtractor={(item) => item.id}
+          contentContainerStyle={styles.listContainer}
+          renderItem={({ item }) => {
+            const quantity = getQuantityInCart(item.id);
+            return (
+              <View style={styles.itemCard}>
+                <Image source={{ uri: item.image }} style={styles.itemImage} />
+                <View style={styles.itemDetails}>
+                  <Text style={styles.itemName}>{item.name}</Text>
+                  <Text style={styles.itemDesc} numberOfLines={2}>{item.description}</Text>
+                  
+                  <View style={styles.itemFooter}>
+                    <Text style={styles.itemPrice}>${item.price.toFixed(2)}</Text>
+                    
+                    {quantity > 0 ? (
+                      <View style={styles.addedContainer}>
+                        <Text style={styles.addedText}>{quantity} in Cart</Text>
+                      </View>
+                    ) : (
+                      <TouchableOpacity 
+                        style={styles.addBtn} 
+                        onPress={() => handleAddToCart(item)}
+                      >
+                        <Text style={styles.addBtnText}>Add to Cart</Text>
+                      </TouchableOpacity>
+                    )}
+                  </View>
+                </View>
+              </View>
+            );
+          }}
+        />
+      )}
     </View>
   );
 }
@@ -69,87 +105,133 @@ export default function FoodListScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#f5f5f5',
   },
-  list: {
-    padding: Spacing.m,
+  headerCart: {
+    marginRight: 16,
+    padding: 4,
   },
-  card: {
-    backgroundColor: '#fff',
-    borderRadius: 20,
-    marginBottom: Spacing.m,
-    flexDirection: 'row',
-    ...Shadows.light,
-    overflow: 'hidden',
-  },
-  image: {
-    width: 120,
-    height: 120,
-  },
-  info: {
-    flex: 1,
-    padding: Spacing.m,
-    justifyContent: 'space-between',
-  },
-  infoHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+  badge: {
+    position: 'absolute',
+    right: -4,
+    top: -4,
+    backgroundColor: Colors.primary,
+    borderRadius: 10,
+    width: 18,
+    height: 18,
+    justifyContent: 'center',
     alignItems: 'center',
   },
-  name: {
-    fontSize: 16,
+  badgeText: {
+    color: 'white',
+    fontSize: 10,
+    fontWeight: 'bold',
+  },
+  bannerContainer: {
+    height: 160,
+    width: '100%',
+    marginBottom: 16,
+  },
+  banner: {
+    width: '100%',
+    height: '100%',
+  },
+  bannerOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(0,0,0,0.4)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  bannerTitle: {
+    color: '#fff',
+    fontSize: 32,
+    fontWeight: 'bold',
+    letterSpacing: 2,
+    textTransform: 'uppercase',
+  },
+  listContainer: {
+    paddingHorizontal: 16,
+    paddingBottom: 20,
+  },
+  itemCard: {
+    flexDirection: 'row',
+    backgroundColor: '#fff',
+    borderRadius: 16,
+    marginBottom: 16,
+    overflow: 'hidden',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  itemImage: {
+    width: 120,
+    height: '100%',
+    minHeight: 120,
+  },
+  itemDetails: {
+    flex: 1,
+    padding: 12,
+  },
+  itemName: {
+    fontSize: 18,
     fontWeight: 'bold',
     color: Colors.light.text,
-    flex: 1,
+    marginBottom: 4,
   },
-  ratingContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#FFFBEB',
-    paddingHorizontal: 6,
-    paddingVertical: 2,
-    borderRadius: 8,
-  },
-  ratingText: {
-    fontSize: 12,
-    fontWeight: '600',
-    color: '#D97706',
-    marginLeft: 2,
-  },
-  description: {
-    fontSize: 12,
+  itemDesc: {
+    fontSize: 14,
     color: Colors.light.textSecondary,
-    marginVertical: 4,
+    marginBottom: 12,
   },
-  footer: {
+  itemFooter: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    marginTop: 'auto',
   },
-  price: {
+  itemPrice: {
     fontSize: 18,
     fontWeight: 'bold',
     color: Colors.primary,
   },
-  addButton: {
-    borderRadius: 12,
-    overflow: 'hidden',
+  addBtn: {
+    backgroundColor: Colors.primary,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 20,
   },
-  gradientButton: {
-      width: 40,
-      height: 40,
-      justifyContent: 'center',
-      alignItems: 'center',
+  addBtnText: {
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 14,
+  },
+  addedContainer: {
+    backgroundColor: '#FCE4EC', // A light pink that complements the primary #76153C
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: Colors.primary,
+  },
+  addedText: {
+    color: Colors.primary,
+    fontWeight: 'bold',
+    fontSize: 14,
   },
   emptyContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 100,
+    padding: 20,
+    marginTop: 50,
   },
   emptyText: {
-    fontSize: 16,
+    fontSize: 18,
     color: Colors.light.textSecondary,
-    marginTop: Spacing.m,
+    textAlign: 'center',
+    marginTop: 16,
   },
 });
+

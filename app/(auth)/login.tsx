@@ -29,7 +29,11 @@ export default function LoginScreen() {
         style={styles.header}
       >
         <View style={styles.logoContainer}>
-            <Text style={styles.logoText}>Bitezy</Text>
+            <Image
+              source={require('@/assets/images/bitezy-logo.png')}
+              style={styles.logoImage}
+              resizeMode="contain"
+            />
             <Text style={styles.logoSubtext}>Deliciousness Delivered</Text>
         </View>
       </LinearGradient>
@@ -98,16 +102,15 @@ const styles = StyleSheet.create({
   logoContainer: {
     alignItems: 'center',
   },
-  logoText: {
-    fontSize: 48,
-    fontWeight: 'bold',
-    color: '#fff',
-    letterSpacing: 2,
+  logoImage: {
+    width: 120,
+    height: 120,
+    marginBottom: 5,
   },
   logoSubtext: {
     fontSize: 16,
     color: 'rgba(255, 255, 255, 0.8)',
-    marginTop: 5,
+    // marginTop: 5,
   },
   content: {
     flex: 1,
