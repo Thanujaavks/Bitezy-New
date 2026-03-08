@@ -79,10 +79,9 @@ export default function ProfileScreen() {
       >
         <View style={styles.profileInfo}>
           <View style={styles.avatarContainer}>
-            <Text style={styles.avatarText}>{user?.name?.charAt(0) || 'U'}</Text>
+            <Text style={styles.avatarText}>{user?.username?.charAt(0) || 'U'}</Text>
           </View>
-          <Text style={styles.userName}>{user?.name || 'User Name'}</Text>
-          <Text style={styles.userEmail}>{user?.email || 'user@example.com'}</Text>
+          <Text style={styles.userName}>{user?.username || 'User Name'}</Text>
         </View>
       </LinearGradient>
 

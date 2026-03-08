@@ -39,7 +39,7 @@ export default function HomeScreen() {
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.header}>
           <View>
-            <Text style={styles.greeting}>Hello, {user?.name || 'Foodie'}!</Text>
+            <Text style={styles.greeting}>Hello, {user?.username || 'Foodie'}!</Text>
             <Text style={styles.subGreeting}>What would you like to eat today?</Text>
           </View>
           <TouchableOpacity style={styles.profileButton}>

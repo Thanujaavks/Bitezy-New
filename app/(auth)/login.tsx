@@ -6,19 +6,27 @@ import { Colors, Spacing, Shadows } from '@/constants/theme';
 import { LinearGradient } from 'expo-linear-gradient';
 
 export default function LoginScreen() {
-  const [email, setEmail] = useState('');
-  const [name, setName] = useState('');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const { login } = useAuth();
   const router = useRouter();
 
   const handleLogin = async () => {
-    if (!email || !name) {
+    if (!username || !password) {
       setError('Please fill in all fields');
       return;
     }
-    await login(email, name);
-    router.replace('/(tabs)/home');
+    
+    if (
+      username === process.env.EXPO_PUBLIC_USERNAME &&
+      password === process.env.EXPO_PUBLIC_PASSWORD
+    ) {
+      await login(username);
+      router.replace('/(tabs)/home');
+    } else {
+      setError('Invalid username or password');
+    }
   };
 
   return (
@@ -45,24 +53,25 @@ export default function LoginScreen() {
         {error ? <Text style={styles.errorText}>{error}</Text> : null}
 
         <View style={styles.inputContainer}>
-          <Text style={styles.label}>Name</Text>
+          <Text style={styles.label}>Username</Text>
           <TextInput
             style={styles.input}
-            placeholder="Enter your name"
-            value={name}
-            onChangeText={setName}
+            placeholder="Enter your username"
+            value={username}
+            onChangeText={setUsername}
+            autoCapitalize="none"
             placeholderTextColor="#999"
           />
         </View>
 
         <View style={styles.inputContainer}>
-          <Text style={styles.label}>Email</Text>
+          <Text style={styles.label}>Password</Text>
           <TextInput
             style={styles.input}
-            placeholder="Enter your email"
-            value={email}
-            onChangeText={setEmail}
-            keyboardType="email-address"
+            placeholder="Enter your password"
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry
             autoCapitalize="none"
             placeholderTextColor="#999"
           />
@@ -79,9 +88,7 @@ export default function LoginScreen() {
           </LinearGradient>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.footerLink}>
-          <Text style={styles.footerText}>Don't have an account? <Text style={styles.footerLinkText}>Sign Up</Text></Text>
-        </TouchableOpacity>
+
       </View>
     </View>
   );

@@ -2,13 +2,12 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface User {
-  name: string;
-  email: string;
+  username: string;
 }
 
 interface AuthContextType {
   user: User | null;
-  login: (email: string, name: string) => Promise<void>;
+  login: (username: string) => Promise<void>;
   logout: () => Promise<void>;
   isAuthenticated: boolean;
 }
@@ -38,8 +37,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  const login = async (email: string, name: string) => {
-    const newUser = { email, name };
+  const login = async (username: string) => {
+    const newUser = { username };
     setUser(newUser);
     await AsyncStorage.setItem(USER_STORAGE_KEY, JSON.stringify(newUser));
   };
