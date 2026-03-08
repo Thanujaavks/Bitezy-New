@@ -6,13 +6,13 @@ import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 
 export default function CartScreen() {
-  const { cart, updateQuantity, removeFromCart, totalAmount, clearCart } = useCart();
+  const { cart, updateQuantity, removeFromCart, totalAmount, placeOrder } = useCart();
 
   const handlePlaceOrder = () => {
     Alert.alert(
       'Order Placed!',
       'Your delicious food is on its way.',
-      [{ text: 'OK', onPress: () => clearCart() }]
+      [{ text: 'OK', onPress: () => placeOrder() }]
     );
   };
 
