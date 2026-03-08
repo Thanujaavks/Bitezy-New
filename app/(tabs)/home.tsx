@@ -12,12 +12,17 @@ const COLUMN_WIDTH = (width - Spacing.l * 2 - Spacing.m) / 2;
 
 export default function HomeScreen() {
   const [searchQuery, setSearchQuery] = useState('');
+  const [showAllCategories, setShowAllCategories] = useState(false);
   const { user } = useAuth();
   const router = useRouter();
 
   const filteredCategories = CATEGORIES.filter(cat =>
     cat.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  const displayedCategories = showAllCategories 
+    ? filteredCategories 
+    : filteredCategories.slice(0, 4);
 
   const renderCategory = ({ item }: { item: any }) => (
     <TouchableOpacity
@@ -69,7 +74,10 @@ export default function HomeScreen() {
             <View style={styles.promoTextContainer}>
               <Text style={styles.promoTitle}>Special Offer</Text>
               <Text style={styles.promoSubtitle}>Get 30% OFF on your first order!</Text>
-              <TouchableOpacity style={styles.promoButton}>
+              <TouchableOpacity 
+                style={styles.promoButton}
+                onPress={() => router.push(`/food-list/${CATEGORIES[0].id}`)}
+              >
                 <Text style={styles.promoButtonText}>Order Now</Text>
               </TouchableOpacity>
             </View>
@@ -79,13 +87,13 @@ export default function HomeScreen() {
 
         <View style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}>Categories</Text>
-          <TouchableOpacity>
-            <Text style={styles.seeAllText}>See All</Text>
+          <TouchableOpacity onPress={() => setShowAllCategories(!showAllCategories)}>
+            <Text style={styles.seeAllText}>{showAllCategories ? 'Show Less' : 'See All'}</Text>
           </TouchableOpacity>
         </View>
 
         <FlatList
-          data={filteredCategories}
+          data={displayedCategories}
           renderItem={renderCategory}
           keyExtractor={(item) => item.id}
           numColumns={2}

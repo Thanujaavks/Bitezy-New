@@ -14,11 +14,13 @@ interface CartContextType {
   clearCart: () => void;
   totalAmount: number;
   orders: any[];
+  placeOrder: () => void;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 const CART_STORAGE_KEY = '@bitezy_cart';
+const ORDERS_STORAGE_KEY = '@bitezy_orders';
 
 export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [cart, setCart] = useState<CartItem[]>([]);
@@ -26,6 +28,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   useEffect(() => {
     loadCart();
+    loadOrders();
   }, []);
 
   useEffect(() => {
@@ -40,6 +43,25 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
     } catch (error) {
       console.error('Failed to load cart', error);
+    }
+  };
+
+  const loadOrders = async () => {
+    try {
+      const storedOrders = await AsyncStorage.getItem(ORDERS_STORAGE_KEY);
+      if (storedOrders) {
+        setOrders(JSON.parse(storedOrders));
+      }
+    } catch (error) {
+      console.error('Failed to load orders', error);
+    }
+  };
+
+  const saveOrders = async (newOrders: any[]) => {
+    try {
+      await AsyncStorage.setItem(ORDERS_STORAGE_KEY, JSON.stringify(newOrders));
+    } catch (error) {
+      console.error('Failed to save orders', error);
     }
   };
 
@@ -85,8 +107,24 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const totalAmount = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
+  const placeOrder = () => {
+    if (cart.length === 0) return;
+
+    const newOrder = {
+      id: Math.random().toString(36).substr(2, 9),
+      date: new Date().toISOString(),
+      items: [...cart],
+      totalAmount: totalAmount + 2, // Including delivery fee
+    };
+
+    const updatedOrders = [newOrder, ...orders];
+    setOrders(updatedOrders);
+    saveOrders(updatedOrders);
+    clearCart();
+  };
+
   return (
-    <CartContext.Provider value={{ cart, addToCart, removeFromCart, updateQuantity, clearCart, totalAmount, orders }}>
+    <CartContext.Provider value={{ cart, addToCart, removeFromCart, updateQuantity, clearCart, totalAmount, orders, placeOrder }}>
       {children}
     </CartContext.Provider>
   );

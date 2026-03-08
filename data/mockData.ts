@@ -58,7 +58,7 @@ export const CATEGORIES: Category[] = [
   {
     id: '9',
     name: 'Dosa',
-    image: 'https://images.unsplash.com/photo-1589301760014-d929f39ce9b1?q=80&w=500&auto=format&fit=crop',
+    image: 'https://images.unsplash.com/photo-1668236543090-82eba5ee5976?w=500&h=500&fit=crop',
   },
   {
     id: '10',
@@ -231,7 +231,7 @@ export const FOOD_ITEMS: FoodItem[] = [
     categoryId: '9',
     name: 'Masala Dosa',
     price: 6.99,
-    image: 'https://images.unsplash.com/photo-1589301760014-d929f39ce9b1?q=80&w=500&auto=format&fit=crop',
+    image: 'https://images.unsplash.com/photo-1668236543090-82eba5ee5976?w=500&h=500&fit=crop',
     description: 'Crispy rice crepe stuffed with spiced potato filling.',
     rating: 4.8,
   },
@@ -240,7 +240,7 @@ export const FOOD_ITEMS: FoodItem[] = [
     categoryId: '9',
     name: 'Onion Dosa',
     price: 5.99,
-    image: 'https://images.unsplash.com/photo-1647466723048-0cbf8db4a9f3?q=80&w=500&auto=format&fit=crop',
+    image: 'https://images.unsplash.com/photo-1668236543090-82eba5ee5976?w=500&h=500&fit=crop',
     description: 'Crispy crepe garnished with finely chopped onions.',
     rating: 4.6,
   },

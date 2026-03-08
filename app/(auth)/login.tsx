@@ -17,7 +17,7 @@ export default function LoginScreen() {
       setError('Please fill in all fields');
       return;
     }
-    
+
     if (
       username === process.env.EXPO_PUBLIC_USERNAME &&
       password === process.env.EXPO_PUBLIC_PASSWORD
@@ -30,67 +30,70 @@ export default function LoginScreen() {
   };
 
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+    >
       <Stack.Screen options={{ headerShown: false }} />
-      <LinearGradient
-        colors={Colors.light.gradient}
-        style={styles.header}
-      >
-        <View style={styles.logoContainer}>
-            <Image
-              source={require('@/assets/images/bitezy-logo.png')}
-              style={styles.logoImage}
-              resizeMode="contain"
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }} bounces={false} keyboardShouldPersistTaps="handled">
+        <LinearGradient
+          colors={Colors.light.gradient}
+          style={styles.header}
+        >
+          <View style={styles.logoContainer}>
+              <Image
+                source={require('@/assets/images/bitezy-logo.png')}
+                style={styles.logoImage}
+                resizeMode="contain"
+              />
+              <Text style={styles.logoSubtext}>Deliciousness Delivered</Text>
+          </View>
+        </LinearGradient>
+
+        <View style={styles.content}>
+          <Text style={styles.title}>Welcome Back</Text>
+          <Text style={styles.subtitle}>Login to continue ordering your favorite food</Text>
+
+          {error ? <Text style={styles.errorText}>{error}</Text> : null}
+
+          <View style={styles.inputContainer}>
+            <Text style={styles.label}>Username</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Enter your username"
+              value={username}
+              onChangeText={setUsername}
+              autoCapitalize="none"
+              placeholderTextColor="#999"
             />
-            <Text style={styles.logoSubtext}>Deliciousness Delivered</Text>
+          </View>
+
+          <View style={styles.inputContainer}>
+            <Text style={styles.label}>Password</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Enter your password"
+              value={password}
+              onChangeText={setPassword}
+              secureTextEntry
+              autoCapitalize="none"
+              placeholderTextColor="#999"
+            />
+          </View>
+
+          <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
+            <LinearGradient
+              colors={Colors.light.gradient}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 0 }}
+              style={styles.gradientButton}
+            >
+              <Text style={styles.loginButtonText}>Login</Text>
+            </LinearGradient>
+          </TouchableOpacity>
         </View>
-      </LinearGradient>
-
-      <View style={styles.content}>
-        <Text style={styles.title}>Welcome Back</Text>
-        <Text style={styles.subtitle}>Login to continue ordering your favorite food</Text>
-
-        {error ? <Text style={styles.errorText}>{error}</Text> : null}
-
-        <View style={styles.inputContainer}>
-          <Text style={styles.label}>Username</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Enter your username"
-            value={username}
-            onChangeText={setUsername}
-            autoCapitalize="none"
-            placeholderTextColor="#999"
-          />
-        </View>
-
-        <View style={styles.inputContainer}>
-          <Text style={styles.label}>Password</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Enter your password"
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry
-            autoCapitalize="none"
-            placeholderTextColor="#999"
-          />
-        </View>
-
-        <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
-          <LinearGradient
-            colors={Colors.light.gradient}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 0 }}
-            style={styles.gradientButton}
-          >
-            <Text style={styles.loginButtonText}>Login</Text>
-          </LinearGradient>
-        </TouchableOpacity>
-
-
-      </View>
-    </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
 
@@ -137,14 +140,14 @@ const styles = StyleSheet.create({
       },
       default: {},
     }),
-    marginBottom: Spacing.xl,
+    marginBottom: Spacing.xxxl,
   },
   title: {
     fontSize: 28,
     fontWeight: 'bold',
     color: Colors.light.text,
     textAlign: 'center',
-    marginTop: Spacing.m,
+    marginTop: Spacing.l,
   },
   subtitle: {
     fontSize: 16,

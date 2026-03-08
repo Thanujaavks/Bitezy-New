@@ -20,6 +20,8 @@ export default function ProfileScreen() {
     zipCode: ''
   });
   const [savedAddresses, setSavedAddresses] = useState<typeof newAddress[]>([]);
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string | null>(null);
+
 
   const toggleSection = (title: string) => {
     setExpandedSection(expandedSection === title ? null : title);
@@ -202,6 +204,56 @@ export default function ProfileScreen() {
                       </View>
                     </View>
                   )}
+                </View>
+              )}
+
+              {expandedSection === item.title && item.title === 'Payment Methods' && (
+                <View style={styles.paymentContainer}>
+                  <TouchableOpacity 
+                    style={[
+                      styles.paymentOption, 
+                      selectedPaymentMethod === 'cod' && styles.selectedPaymentOption
+                    ]}
+                    onPress={() => setSelectedPaymentMethod('cod')}
+                  >
+                    <View style={styles.paymentOptionLeft}>
+                      <Ionicons 
+                        name="cash-outline" 
+                        size={24} 
+                        color={selectedPaymentMethod === 'cod' ? Colors.primary as string : '#666'} 
+                      />
+                      <Text style={[
+                        styles.paymentOptionText,
+                        selectedPaymentMethod === 'cod' && styles.selectedPaymentText
+                      ]}>Cash on Delivery</Text>
+                    </View>
+                    {selectedPaymentMethod === 'cod' && (
+                      <Ionicons name="checkmark-circle" size={20} color={Colors.primary as string} />
+                    )}
+                  </TouchableOpacity>
+
+                  <TouchableOpacity 
+                    style={[
+                      styles.paymentOption, 
+                      selectedPaymentMethod === 'card' && styles.selectedPaymentOption
+                    ]}
+                    onPress={() => setSelectedPaymentMethod('card')}
+                  >
+                    <View style={styles.paymentOptionLeft}>
+                      <Ionicons 
+                        name="card-outline" 
+                        size={24} 
+                        color={selectedPaymentMethod === 'card' ? Colors.primary as string : '#666'} 
+                      />
+                      <Text style={[
+                        styles.paymentOptionText,
+                        selectedPaymentMethod === 'card' && styles.selectedPaymentText
+                      ]}>Card Payment</Text>
+                    </View>
+                    {selectedPaymentMethod === 'card' && (
+                      <Ionicons name="checkmark-circle" size={20} color={Colors.primary as string} />
+                    )}
+                  </TouchableOpacity>
                 </View>
               )}
             </View>
@@ -545,5 +597,48 @@ const styles = StyleSheet.create({
     color: '#666',
     marginBottom: 4,
   },
+  paymentContainer: {
+    paddingVertical: 10,
+    marginTop: 5,
+  },
+  paymentOption: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    padding: 16,
+    marginBottom: 10,
+    borderWidth: 1,
+    borderColor: '#eee',
+    ...Platform.select<any>({
+      ios: Shadows.light,
+      android: {
+        elevation: 2,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 8,
+      },
+      default: {},
+    }),
+  },
+  selectedPaymentOption: {
+    borderColor: Colors.primary as string,
+    backgroundColor: '#FFF2F6',
+  },
+  paymentOptionLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  paymentOptionText: {
+    fontSize: 16,
+    marginLeft: 12,
+    color: '#444',
+    fontWeight: '500',
+  },
+  selectedPaymentText: {
+    color: Colors.primary as string,
+    fontWeight: 'bold',
+  },
 });
-
