@@ -11,7 +11,7 @@ import { useAuth } from '@/context/AuthContext';
 const { width } = Dimensions.get('window');
 const COLUMN_WIDTH = (width - Spacing.l * 2 - Spacing.m) / 2;
 
-export default function HomeScreen() {
+function HomeScreen() {
   const [searchQuery, setSearchQuery] = useState('');
   const [showAllCategories, setShowAllCategories] = useState(false);
   const { user } = useAuth();
@@ -21,8 +21,8 @@ export default function HomeScreen() {
     cat.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const displayedCategories = showAllCategories 
-    ? filteredCategories 
+  const displayedCategories = showAllCategories
+    ? filteredCategories
     : filteredCategories.slice(0, 4);
 
   const renderCategory = ({ item }: { item: any }) => (
@@ -75,7 +75,7 @@ export default function HomeScreen() {
             <View style={styles.promoTextContainer}>
               <Text style={styles.promoTitle}>Special Offer</Text>
               <Text style={styles.promoSubtitle}>Get 30% OFF on your first order!</Text>
-              <TouchableOpacity 
+              <TouchableOpacity
                 style={styles.promoButton}
                 onPress={() => router.push(`/food-list/${CATEGORIES[0].id}`)}
               >
@@ -124,6 +124,8 @@ export default function HomeScreen() {
     </SafeAreaView>
   );
 }
+
+export default HomeScreen;
 
 const styles = StyleSheet.create({
   container: {

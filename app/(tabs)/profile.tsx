@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, ScrollView, Platform, Alert, TextInput } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { useAuth } from '@/context/AuthContext';
 import { useCart } from '@/context/CartContext';
@@ -7,7 +8,7 @@ import { Colors, Spacing, Shadows } from '@/constants/theme';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 
-export default function ProfileScreen() {
+function ProfileScreen() {
   const router = useRouter();
   const { user, logout } = useAuth();
   const { clearCart, orders } = useCart();
@@ -35,7 +36,7 @@ export default function ProfileScreen() {
       Alert.alert('Error', 'Please fill in all address fields.');
       return;
     }
-    
+
     setSavedAddresses([...savedAddresses, newAddress]);
     Alert.alert('Success', 'Address saved successfully.');
     setShowAddressForm(false);
@@ -74,7 +75,8 @@ export default function ProfileScreen() {
   ];
 
   return (
-    <ScrollView style={styles.container}>
+    <SafeAreaView style={styles.container} edges={['top']}>
+      <ScrollView showsVerticalScrollIndicator={false}>
       <LinearGradient
         colors={Colors.light.gradient}
         style={styles.header}
@@ -91,7 +93,7 @@ export default function ProfileScreen() {
         <View style={styles.section}>
           {menuItems.map((item) => (
             <View key={item.id}>
-              <TouchableOpacity 
+              <TouchableOpacity
                 style={styles.menuItem}
                 onPress={() => toggleSection(item.title)}
               >
@@ -101,13 +103,13 @@ export default function ProfileScreen() {
                   </View>
                   <Text style={styles.menuTitle}>{item.title}</Text>
                 </View>
-                <Ionicons 
-                  name={expandedSection === item.title ? "chevron-down" : "chevron-forward"} 
-                  size={20} 
-                  color="#ccc" 
+                <Ionicons
+                  name={expandedSection === item.title ? "chevron-down" : "chevron-forward"}
+                  size={20}
+                  color="#ccc"
                 />
               </TouchableOpacity>
-              
+
               {expandedSection === item.title && item.title === 'My Orders' && (
                 <View style={styles.ordersContainer}>
                   {orders && orders.length > 0 ? (
@@ -117,7 +119,7 @@ export default function ProfileScreen() {
                           <Text style={styles.orderId}>Order #{order.id.toUpperCase()}</Text>
                           <Text style={styles.orderDate}>{new Date(order.date).toLocaleDateString()}</Text>
                         </View>
-                        
+
                         <View style={styles.orderItems}>
                           {order.items.map((orderItem: any) => (
                             <View key={orderItem.id} style={styles.orderItemRow}>
@@ -127,7 +129,7 @@ export default function ProfileScreen() {
                             </View>
                           ))}
                         </View>
-                        
+
                         <View style={styles.orderFooter}>
                           <Text style={styles.orderTotalLabel}>Total:</Text>
                           <Text style={styles.orderTotalAmount}>${order.totalAmount?.toFixed(2) || '0.00'}</Text>
@@ -189,14 +191,14 @@ export default function ProfileScreen() {
                         />
                       </View>
                       <View style={styles.formButtons}>
-                        <TouchableOpacity 
-                          style={styles.cancelBtn} 
+                        <TouchableOpacity
+                          style={styles.cancelBtn}
                           onPress={() => setShowAddressForm(false)}
                         >
                           <Text style={styles.cancelBtnText}>Cancel</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity 
-                          style={styles.saveBtn} 
+                        <TouchableOpacity
+                          style={styles.saveBtn}
                           onPress={handleSaveAddress}
                         >
                           <Text style={styles.saveBtnText}>Save Address</Text>
@@ -209,18 +211,18 @@ export default function ProfileScreen() {
 
               {expandedSection === item.title && item.title === 'Payment Methods' && (
                 <View style={styles.paymentContainer}>
-                  <TouchableOpacity 
+                  <TouchableOpacity
                     style={[
-                      styles.paymentOption, 
+                      styles.paymentOption,
                       selectedPaymentMethod === 'cod' && styles.selectedPaymentOption
                     ]}
                     onPress={() => setSelectedPaymentMethod('cod')}
                   >
                     <View style={styles.paymentOptionLeft}>
-                      <Ionicons 
-                        name="cash-outline" 
-                        size={24} 
-                        color={selectedPaymentMethod === 'cod' ? Colors.primary as string : '#666'} 
+                      <Ionicons
+                        name="cash-outline"
+                        size={24}
+                        color={selectedPaymentMethod === 'cod' ? Colors.primary as string : '#666'}
                       />
                       <Text style={[
                         styles.paymentOptionText,
@@ -232,18 +234,18 @@ export default function ProfileScreen() {
                     )}
                   </TouchableOpacity>
 
-                  <TouchableOpacity 
+                  <TouchableOpacity
                     style={[
-                      styles.paymentOption, 
+                      styles.paymentOption,
                       selectedPaymentMethod === 'card' && styles.selectedPaymentOption
                     ]}
                     onPress={() => setSelectedPaymentMethod('card')}
                   >
                     <View style={styles.paymentOptionLeft}>
-                      <Ionicons 
-                        name="card-outline" 
-                        size={24} 
-                        color={selectedPaymentMethod === 'card' ? Colors.primary as string : '#666'} 
+                      <Ionicons
+                        name="card-outline"
+                        size={24}
+                        color={selectedPaymentMethod === 'card' ? Colors.primary as string : '#666'}
                       />
                       <Text style={[
                         styles.paymentOptionText,
@@ -264,20 +266,21 @@ export default function ProfileScreen() {
           <Ionicons name="log-out-outline" size={24} color="#FF3B30" />
           <Text style={styles.logoutText}>Logout</Text>
         </TouchableOpacity>
-        
+
         <Text style={styles.versionText}>Bitezy Version 1.0.0</Text>
       </View>
     </ScrollView>
+      </SafeAreaView>
   );
 }
 
+export default ProfileScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
   },
   header: {
-    paddingTop: 60,
     paddingBottom: 40,
     alignItems: 'center',
     borderBottomLeftRadius: 30,
@@ -285,6 +288,7 @@ const styles = StyleSheet.create({
   },
   profileInfo: {
     alignItems: 'center',
+    paddingTop: Spacing.xl,
   },
   avatarContainer: {
     width: 100,
