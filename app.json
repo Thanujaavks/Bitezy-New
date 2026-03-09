@@ -4,7 +4,7 @@
     "slug": "Bitezy",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/bitezy-logo.png",
+    "icon": "./assets/bitezy.png",
     "scheme": "bitezy",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
