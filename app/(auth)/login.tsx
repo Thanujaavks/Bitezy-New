@@ -9,12 +9,13 @@ export default function LoginScreen() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [showErrors, setShowErrors] = useState(false);
   const { login } = useAuth();
   const router = useRouter();
 
   const handleLogin = async () => {
+    setShowErrors(true);
     if (!username || !password) {
-      setError('Please fill in all fields');
       return;
     }
 
@@ -60,26 +61,34 @@ export default function LoginScreen() {
           <View style={styles.inputContainer}>
             <Text style={styles.label}>Username</Text>
             <TextInput
-              style={styles.input}
+              style={[styles.input, !username && showErrors && styles.inputError]}
               placeholder="Enter your username"
               value={username}
-              onChangeText={setUsername}
+              onChangeText={(text) => {
+                setUsername(text);
+                if (text) setShowErrors(false);
+              }}
               autoCapitalize="none"
               placeholderTextColor="#999"
             />
+            {!username && showErrors && <Text style={styles.fieldErrorText}>user name required</Text>}
           </View>
 
           <View style={styles.inputContainer}>
             <Text style={styles.label}>Password</Text>
             <TextInput
-              style={styles.input}
+              style={[styles.input, !password && showErrors && styles.inputError]}
               placeholder="Enter your password"
               value={password}
-              onChangeText={setPassword}
+              onChangeText={(text) => {
+                setPassword(text);
+                if (text) setShowErrors(false);
+              }}
               secureTextEntry
               autoCapitalize="none"
               placeholderTextColor="#999"
             />
+            {!password && showErrors && <Text style={styles.fieldErrorText}>Password is required</Text>}
           </View>
 
           <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
@@ -179,6 +188,15 @@ const styles = StyleSheet.create({
     color: '#FF3B30',
     textAlign: 'center',
     marginBottom: Spacing.m,
+  },
+  fieldErrorText: {
+    color: '#FF3B30',
+    fontSize: 12,
+    marginTop: 4,
+    marginLeft: 4,
+  },
+  inputError: {
+    borderColor: '#FF3B30',
   },
   loginButton: {
     marginTop: Spacing.l,
