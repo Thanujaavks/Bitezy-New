@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, FlatList, TextInput, TouchableOpacity, Image, ScrollView, Dimensions } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { CATEGORIES, FOOD_ITEMS } from '@/data/mockData';
 import { Colors, Spacing, Shadows } from '@/constants/theme';
@@ -40,7 +41,7 @@ export default function HomeScreen() {
   );
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container} edges={['top']}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.header}>
           <View>
@@ -120,7 +121,7 @@ export default function HomeScreen() {
 
         <View style={{ height: 100 }} />
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -134,7 +135,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: Spacing.l,
-    paddingTop: Spacing.xxl,
+    paddingTop: Spacing.m,
     marginBottom: Spacing.m,
   },
   greeting: {

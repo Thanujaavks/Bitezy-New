@@ -8,6 +8,8 @@ import { AuthProvider, useAuth } from '@/context/AuthContext';
 import { CartProvider } from '@/context/CartContext';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+
 function RootLayoutNav() {
   const { isAuthenticated } = useAuth();
   const segments = useSegments();
@@ -41,10 +43,12 @@ function RootLayoutNav() {
 
 export default function RootLayout() {
   return (
-    <AuthProvider>
-      <CartProvider>
-        <RootLayoutNav />
-      </CartProvider>
-    </AuthProvider>
+    <SafeAreaProvider>
+      <AuthProvider>
+        <CartProvider>
+          <RootLayoutNav />
+        </CartProvider>
+      </AuthProvider>
+    </SafeAreaProvider>
   );
 }
