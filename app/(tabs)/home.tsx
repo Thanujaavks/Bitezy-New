@@ -9,7 +9,6 @@ import {
     View
 } from 'react-native';
 import {ThemedTextInput} from '@/components/themed-text-input';
-import {ThemedText} from '@/components/themed-text';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useRouter} from 'expo-router';
 import {CATEGORIES, FOOD_ITEMS} from '@/data/mockData';
