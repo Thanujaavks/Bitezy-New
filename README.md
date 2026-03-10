@@ -1,50 +1,87 @@
-# Welcome to your Expo app 👋
+<div align="center">
+  <img src="./assets/bitezy.png" alt="Bitezy Logo" width="120" />
+  <h1>Bitezy</h1>
+  <p>A modern, high-performance food delivery & discovery mobile application built with <b>React Native</b> and <b>Expo</b>.</p>
+</div>
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+---
 
-## Get started
+## 🚀 Overview
 
-1. Install dependencies
+**Bitezy** is designed to provide a seamless food ordering experience. Users can browse categories, explore popular food items, manage their cart in real-time, and customize their delivery profiles. Leveraging the power of <b>Expo Router</b> and <b>React Context API</b>, Bitezy offers a smooth, reliable, and intuitive interface.
 
-   ```bash
-   npm install
-   ```
+## ✨ Key Features
 
-2. Start the app
+- 📱 **Modern Tab Navigation**: Intuitive access to Home, Cart, and Profile.
+- 🍕 **Category Browsing**: Explore food items organized by cuisine or type with dedicated list views.
+- 🛒 **Dynamic Cart System**: Real-time cart management using `CartContext` with add/remove functionality.
+- 🔒 **Secure Authentication**: Built-in login screen with user session management via `AuthContext`.
+- 📍 **Profile & Delivery**: Integrated profile management for user details and delivery addresses.
+- 🎨 **Shared Design System**: Consistent UI using custom themed components (`ThemedView`, `ThemedText`).
+- ✨ **Rich Animations**: Smooth transitions and haptic feedback for a premium feel.
+- 🔔 **Toast Notifications**: Interactive user feedback using `react-native-toast-message`.
 
-   ```bash
-   npx expo start
-   ```
+## 🛠 Tech Stack
 
-In the output, you'll find options to open the app in a
+- **Framework**: [React Native](https://reactnative.dev)
+- **Runtime**: [Expo 54 SDK](https://expo.dev)
+- **Navigation**: [Expo Router v3](https://docs.expo.dev/router/introduction) (File-based)
+- **State Management**: [React Context API](https://react.dev/reference/react/createContext)
+- **UI & Styling**:
+  - Custom Theming System (`constants/theme.ts`)
+  - [Reanimated](https://docs.swmansion.com/react-native-reanimated/) for animations
+  - [Linear Gradient](https://docs.expo.dev/versions/latest/sdk/linear-gradient/) for sleek backgrounds
+  - [Vector Icons](https://docs.expo.dev/guides/icons/) (@expo/vector-icons)
+- **Persistence**: [Async Storage](https://docs.expo.dev/versions/latest/sdk/async-storage/)
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+## 📂 Project Structure
 
 ```bash
-npm run reset-project
+Bitezy/
+├── app/                  # Main application routes (Expo Router)
+│   ├── (auth)/           # Authentication screens (Login)
+│   ├── (tabs)/           # Main bottom tabs (Home, Cart, Profile)
+│   ├── food-list/        # Category-specific food listing
+│   └── _layout.tsx       # Root layout configuration
+├── components/           # Reusable UI components
+│   ├── ui/               # Base UI elements
+│   ├── CategoryCard.tsx  # Interactive category items
+│   └── FoodItemCard.tsx  # Food display widgets
+├── context/              # Global state (Cart, Auth)
+├── constants/            # Application themes and constants
+├── assets/               # Branding assets and images
+└── data/                 # Mock data or API handlers
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## 📦 Getting Started
 
-## Learn more
+### 1. Prerequisites
+Ensure you have **Node.js** and **npm** installed on your machine.
 
-To learn more about developing your project with Expo, look at the following resources:
+### 2. Installation
+Clone the repository and install the dependencies:
+```bash
+npm install
+```
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+### 3. Run the App
+Start the Expo development server:
+```bash
+npx expo start
+```
+Use the **Expo Go** app on your phone or an **Emulator** (Android/iOS) to view the application.
 
-## Join the community
+## 📜 Available Scripts
 
-Join our community of developers creating universal apps.
+- `npm start` - Starts the Expo server.
+- `npm run android` - Runs the app on an Android emulator.
+- `npm run ios` - Runs the app on an iOS simulator.
+- `npm run lint` - Checks for code styling issues.
+- `npm run reset-project` - Clears the project structure.
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+---
+
+<div align="center">
+  <p>Made with ❤️ for food lovers.</p>
+</div>
+
