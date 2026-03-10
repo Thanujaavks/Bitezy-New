@@ -552,6 +552,7 @@ const styles = StyleSheet.create({
         marginBottom: 12,
     },
     input: {
+        color: Colors.light.text,
         backgroundColor: '#f9f9f9',
         borderWidth: 1,
         borderColor: '#e0e0e0',
