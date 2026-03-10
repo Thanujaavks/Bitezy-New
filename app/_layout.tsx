@@ -9,6 +9,7 @@ import { CartProvider } from '@/context/CartContext';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import Toast from 'react-native-toast-message';
 
 function RootLayoutNav() {
   const { isAuthenticated } = useAuth();
@@ -37,6 +38,7 @@ function RootLayoutNav() {
         <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
       </Stack>
       <StatusBar style="auto" />
+      <Toast />
     </ThemeProvider>
   );
 }

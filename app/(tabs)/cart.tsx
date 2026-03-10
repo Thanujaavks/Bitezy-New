@@ -1,5 +1,6 @@
 import React from 'react';
-import { StyleSheet, View, Text, FlatList, Image, TouchableOpacity, Alert } from 'react-native';
+import { StyleSheet, View, Text, FlatList, Image, TouchableOpacity } from 'react-native';
+import Toast from 'react-native-toast-message';
 import { useCart } from '@/context/CartContext';
 import { Colors, Spacing, Shadows } from '@/constants/theme';
 import { Ionicons } from '@expo/vector-icons';
@@ -9,11 +10,12 @@ function CartScreen() {
   const { cart, updateQuantity, removeFromCart, totalAmount, placeOrder } = useCart();
 
   const handlePlaceOrder = () => {
-    Alert.alert(
-      'Order Placed!',
-      'Your delicious food is on its way.',
-      [{ text: 'OK', onPress: () => placeOrder() }]
-    );
+    placeOrder();
+    Toast.show({
+      type: 'success',
+      text1: 'Order Placed!',
+      text2: 'Your delicious food is on its way.',
+    });
   };
 
   const renderCartItem = ({ item }: { item: any }) => (

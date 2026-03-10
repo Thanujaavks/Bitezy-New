@@ -5,10 +5,11 @@ import {
     ScrollView,
     StyleSheet,
     Text,
-    TextInput,
     TouchableOpacity,
     View
 } from 'react-native';
+import {ThemedTextInput} from '@/components/themed-text-input';
+import {ThemedText} from '@/components/themed-text';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useRouter} from 'expo-router';
 import {CATEGORIES, FOOD_ITEMS} from '@/data/mockData';
@@ -56,7 +57,7 @@ function HomeScreen() {
                 <View style={styles.searchContainer}>
                     <View style={styles.searchBar}>
                         <Ionicons name="search-outline" size={20} color="#999"/>
-                        <TextInput
+                        <ThemedTextInput
                             style={styles.searchInput}
                             placeholder="Search for categories..."
                             value={searchQuery}
@@ -145,11 +146,9 @@ const styles = StyleSheet.create({
     greeting: {
         fontSize: 24,
         fontWeight: 'bold',
-        color: Colors.light.text,
     },
     subGreeting: {
         fontSize: 14,
-        color: Colors.light.textSecondary,
         marginTop: 2,
     },
     profileButton: {

@@ -16,6 +16,7 @@ export const Colors = {
     tabIconDefault: '#999999',
     tabIconSelected: '#76153C',
     border: '#EEEEEE',
+    placeholder: '#999999',
     gradient: ['#76153C', '#4A148C'] as const,
   },
   dark: {
@@ -28,6 +29,7 @@ export const Colors = {
     tabIconDefault: '#666666',
     tabIconSelected: '#FF5C8D',
     border: '#333333',
+    placeholder: '#888888',
     gradient: ['#76153C', '#2A0A16'] as const,
   },
 };

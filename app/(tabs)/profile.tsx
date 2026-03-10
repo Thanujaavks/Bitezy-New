@@ -1,5 +1,7 @@
 import React, {useState} from 'react';
-import {Alert, Platform, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
+import {Alert, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {ThemedTextInput} from '@/components/themed-text-input';
+import Toast from 'react-native-toast-message';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useRouter} from 'expo-router';
 import {useAuth} from '@/context/AuthContext';
@@ -33,12 +35,20 @@ function ProfileScreen() {
 
     const handleSaveAddress = () => {
         if (!newAddress.street || !newAddress.city || !newAddress.state || !newAddress.zipCode) {
-            Alert.alert('Error', 'Please fill in all address fields.');
+            Toast.show({
+                type: 'error',
+                text1: 'Error',
+                text2: 'Please fill in all address fields.'
+            });
             return;
         }
 
         setSavedAddresses([...savedAddresses, newAddress]);
-        Alert.alert('Success', 'Address saved successfully.');
+        Toast.show({
+            type: 'success',
+            text1: 'Success',
+            text2: 'Address saved successfully.'
+        });
         setShowAddressForm(false);
         setNewAddress({street: '', city: '', state: '', zipCode: ''});
     };
@@ -173,7 +183,7 @@ function ProfileScreen() {
                                         ) : (
                                             <View style={styles.addressForm}>
                                                 <Text style={styles.formTitle}>New Address</Text>
-                                                <TextInput
+                                                <ThemedTextInput
                                                     style={styles.input}
                                                     placeholder="Street Address"
                                                     value={newAddress.street}
@@ -182,14 +192,14 @@ function ProfileScreen() {
                                                         street: text
                                                     })}
                                                 />
-                                                <TextInput
+                                                <ThemedTextInput
                                                     style={styles.input}
                                                     placeholder="City"
                                                     value={newAddress.city}
                                                     onChangeText={(text) => setNewAddress({...newAddress, city: text})}
                                                 />
                                                 <View style={styles.row}>
-                                                    <TextInput
+                                                    <ThemedTextInput
                                                         style={[styles.input, styles.halfInput]}
                                                         placeholder="State"
                                                         value={newAddress.state}
@@ -198,7 +208,7 @@ function ProfileScreen() {
                                                             state: text
                                                         })}
                                                     />
-                                                    <TextInput
+                                                    <ThemedTextInput
                                                         style={[styles.input, styles.halfInput]}
                                                         placeholder="Zip Code"
                                                         keyboardType="numeric"

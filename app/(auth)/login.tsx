@@ -7,11 +7,11 @@ import {
     ScrollView,
     StyleSheet,
     Text,
-    TextInput,
     TouchableOpacity,
     TouchableWithoutFeedback,
     View,
 } from 'react-native';
+import {ThemedTextInput} from '@/components/themed-text-input';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {Stack, useRouter} from 'expo-router';
 import {useAuth} from '@/context/AuthContext';
@@ -76,7 +76,7 @@ function LoginScreen() {
 
                         <View style={styles.inputContainer}>
                             <Text style={styles.label}>Username</Text>
-                            <TextInput
+                            <ThemedTextInput
                                 style={[styles.input, !username && showErrors && styles.inputError]}
                                 placeholder="Enter your username"
                                 value={username}
@@ -85,7 +85,6 @@ function LoginScreen() {
                                     if (text) setShowErrors(false);
                                 }}
                                 autoCapitalize="none"
-                                placeholderTextColor="#999"
                             />
                             {!username && showErrors && (
                                 <Text style={styles.fieldErrorText}>Username is required</Text>
@@ -94,7 +93,7 @@ function LoginScreen() {
 
                         <View style={styles.inputContainer}>
                             <Text style={styles.label}>Password</Text>
-                            <TextInput
+                            <ThemedTextInput
                                 style={[styles.input, !password && showErrors && styles.inputError]}
                                 placeholder="Enter your password"
                                 value={password}
@@ -104,7 +103,6 @@ function LoginScreen() {
                                 }}
                                 secureTextEntry
                                 autoCapitalize="none"
-                                placeholderTextColor="#999"
                             />
                             {!password && showErrors && (
                                 <Text style={styles.fieldErrorText}>Password is required</Text>

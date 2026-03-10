@@ -1,5 +1,6 @@
 import React from 'react';
-import {Alert, FlatList, Image, Platform, StyleSheet, Text, ToastAndroid, TouchableOpacity, View} from 'react-native';
+import {FlatList, Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import Toast from 'react-native-toast-message';
 import {Stack, useLocalSearchParams, useRouter} from 'expo-router';
 import {CATEGORIES, FOOD_ITEMS} from '@/data/mockData';
 import {useCart} from '@/context/CartContext';
@@ -17,11 +18,11 @@ function CategoryScreen() {
 
     const handleAddToCart = (item: any) => {
         addToCart(item);
-        if (Platform.OS === 'android') {
-            ToastAndroid.show(`${item.name} added to cart!`, ToastAndroid.SHORT);
-        } else {
-            Alert.alert('Success', `${item.name} added to cart!`);
-        }
+        Toast.show({
+            type: 'success',
+            text1: 'Added to cart!',
+            text2: `${item.name} has been added.`
+        });
     };
 
     const getQuantityInCart = (itemId: string) => {
