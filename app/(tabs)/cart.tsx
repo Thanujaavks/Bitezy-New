@@ -5,7 +5,7 @@ import { Colors, Spacing, Shadows } from '@/constants/theme';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 
-export default function CartScreen() {
+function CartScreen() {
   const { cart, updateQuantity, removeFromCart, totalAmount, placeOrder } = useCart();
 
   const handlePlaceOrder = () => {
@@ -28,14 +28,14 @@ export default function CartScreen() {
         </View>
         <Text style={styles.price}>${item.price.toFixed(2)}</Text>
         <View style={styles.quantityContainer}>
-          <TouchableOpacity 
+          <TouchableOpacity
             style={styles.qtyButton}
             onPress={() => updateQuantity(item.id, -1)}
           >
             <Ionicons name="remove" size={20} color={Colors.primary} />
           </TouchableOpacity>
           <Text style={styles.quantity}>{item.quantity}</Text>
-          <TouchableOpacity 
+          <TouchableOpacity
             style={styles.qtyButton}
             onPress={() => updateQuantity(item.id, 1)}
           >
@@ -95,7 +95,7 @@ export default function CartScreen() {
     </View>
   );
 }
-
+export default CartScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,

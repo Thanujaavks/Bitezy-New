@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import {
-    Dimensions,
     FlatList,
     Image,
     ScrollView,
@@ -17,9 +16,8 @@ import {Colors, Shadows, Spacing} from '@/constants/theme';
 import {Ionicons} from '@expo/vector-icons';
 import {LinearGradient} from 'expo-linear-gradient';
 import {useAuth} from '@/context/AuthContext';
+import CategoryCard from '@/components/CategoryCard';
 
-const {width} = Dimensions.get('window');
-const COLUMN_WIDTH = (width - Spacing.l * 2 - Spacing.m) / 2;
 
 function HomeScreen() {
     const [searchQuery, setSearchQuery] = useState('');
@@ -36,18 +34,10 @@ function HomeScreen() {
         : filteredCategories.slice(0, 4);
 
     const renderCategory = ({item}: { item: any }) => (
-        <TouchableOpacity
-            style={styles.categoryCard}
-            onPress={() => router.push(`/food-list/${item.id}`)}
-        >
-            <Image source={{uri: item.image}} style={styles.categoryImage}/>
-            <LinearGradient
-                colors={['transparent', 'rgba(0,0,0,0.7)']}
-                style={styles.categoryOverlay}
-            >
-                <Text style={styles.categoryName}>{item.name}</Text>
-            </LinearGradient>
-        </TouchableOpacity>
+        <CategoryCard
+            item={item}
+            onPress={() => router.push({ pathname: '/food-list/foodList', params: { categoryId: item.id } })}
+        />
     );
 
     return (
@@ -87,7 +77,7 @@ function HomeScreen() {
                             <Text style={styles.promoSubtitle}>Get 30% OFF on your first order!</Text>
                             <TouchableOpacity
                                 style={styles.promoButton}
-                                onPress={() => router.push(`/food-list/${CATEGORIES[0].id}`)}
+                                onPress={() => router.push({ pathname: '/food-list/foodList', params: { categoryId: CATEGORIES[0].id } })}
                             >
                                 <Text style={styles.promoButtonText}>Order Now</Text>
                             </TouchableOpacity>
@@ -121,7 +111,7 @@ function HomeScreen() {
                             contentContainerStyle={styles.popularList}>
                     {FOOD_ITEMS.slice(0, 4).map((item) => (
                         <TouchableOpacity key={item.id} style={styles.popularCard}
-                                          onPress={() => router.push(`/food-list/${item.categoryId}`)}>
+                                          onPress={() => router.push({ pathname: '/food-list/foodList', params: { categoryId: item.categoryId } })}>
                             <Image source={{uri: item.image}} style={styles.popularImage}/>
                             <View style={styles.popularInfo}>
                                 <Text style={styles.popularName} numberOfLines={1}>{item.name}</Text>
@@ -254,31 +244,6 @@ const styles = StyleSheet.create({
     columnWrapper: {
         justifyContent: 'space-between',
         marginBottom: Spacing.m,
-    },
-    categoryCard: {
-        width: COLUMN_WIDTH,
-        height: 150,
-        borderRadius: 20,
-        overflow: 'hidden',
-        ...Shadows.light,
-    },
-    categoryImage: {
-        width: '100%',
-        height: '100%',
-    },
-    categoryOverlay: {
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-        right: 0,
-        height: 60,
-        justifyContent: 'flex-end',
-        padding: Spacing.m,
-    },
-    categoryName: {
-        color: '#fff',
-        fontSize: 16,
-        fontWeight: 'bold',
     },
     popularList: {
         paddingLeft: Spacing.l,
